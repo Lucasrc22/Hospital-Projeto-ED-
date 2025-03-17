@@ -14,34 +14,32 @@ class FilaAtendimento:
         self.ultimo = None
 
     def adicionar_paciente(self, paciente):
-        """Adiciona um paciente à fila de atendimento com base na prioridade."""
         novo = No(paciente, paciente.prioridade)
         
-        if self.primeiro is None:  # Se a fila estiver vazia
+        if self.primeiro is None:  
             self.primeiro = novo
             self.ultimo = novo
         else:
             atual = self.primeiro
             anterior = None
 
-            # Inserção ordenada por prioridade (1 = maior prioridade)
-            while atual is not None and atual.prioridade <= novo.prioridade:
+            while atual is not None and atual.prioridade >= novo.prioridade:
                 anterior = atual
                 atual = atual.proximo
 
-            if anterior is None:  # Inserir no início
+            if anterior is None:  
                 novo.proximo = self.primeiro
                 self.primeiro = novo
-            else:  # Inserir no meio ou final
+            else:  
                 novo.proximo = atual
                 anterior.proximo = novo
-                if atual is None:  # Se for o último nó
+                if atual is None:  
                     self.ultimo = novo
 
-        print(f"Paciente {paciente.nome} adicionado à fila com prioridade {paciente.prioridade}.")
+        print(f"Paciente {paciente.nome} adicionado à fila com prioridade {paciente.prioridade}.\n")
 
     def chamar_proximo(self):
-        """Chama o próximo paciente da fila."""
+        
         if self.primeiro is None:
             print("Nenhum paciente na fila de atendimento.")
             return None
@@ -49,14 +47,14 @@ class FilaAtendimento:
         paciente_atendido = self.primeiro
         self.primeiro = self.primeiro.proximo
 
-        if self.primeiro is None:  # Se a fila ficou vazia
+        if self.primeiro is None:  
             self.ultimo = None
 
         print(f"Atendendo paciente: {paciente_atendido.paciente.nome}")
         return paciente_atendido.paciente
 
     def visualizar_fila(self):
-        """Exibe a lista de pacientes na fila."""
+        
         if self.primeiro is None:
             print("A fila de atendimento está vazia.")
             return
