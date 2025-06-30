@@ -214,7 +214,7 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
     graus = dict(G.degree())
 
     for node in G.nodes():
-        zoom = 0.20 + (graus.get(node, 1) * 0.01)  # Zoom dinâmico baseado no grau
+        zoom = 0.20 + (graus.get(node, 1) * 0.01) 
 
         if node in imagens:
             img_obj = carregar_imagem(imagens[node], zoom=zoom)
