@@ -80,7 +80,7 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
         mapa_arquivo = None
 
         if "saiyajin" in saga_normalizada:
-            mapa_arquivo = "mapaSagaSayajin.png"
+            mapa_arquivo = "mapaSayajin.png"
         elif "freeza" in saga_normalizada:
             mapa_arquivo = "mapaNamekZ.png"
         elif "cell" in saga_normalizada:

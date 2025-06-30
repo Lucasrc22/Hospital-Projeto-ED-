@@ -1,10 +1,10 @@
 nome,sagas,imagem
-Goku,"Saiyajins,Freeza,Cell,Majin Buu",imagens/personagens/goku.png
-Piccolo,"Saiyajins,Freeza,Cell",imagens/personagens/piccolo.png
-Gohan Kid,"Saiyajins,Freeza",imagens/personagens/GohanKid.png
-Raditz,"Saiyajins",imagens/personagens/raditz.png
-Nappa,"Saiyajins",imagens/personagens/nappa.png
-Vegeta (saga Saiyajin),"Saiyajins",imagens/personagens/vegetaSagaSayajin.png
+Goku,"Saiyajin,Freeza,Cell,Majin Buu",imagens/personagens/goku.png
+Piccolo,"Saiyajin,Freeza,Cell",imagens/personagens/piccolo.png
+Gohan Kid,"Saiyajin,Freeza",imagens/personagens/GohanKid.png
+Raditz,"Saiyajin",imagens/personagens/raditz.png
+Nappa,"Saiyajin",imagens/personagens/nappa.png
+Vegeta (saga Saiyajin),"Saiyajin",imagens/personagens/vegetaSagaSayajin.png
 Vegeta,"Freeza,Cell,Majin Buu",imagens/personagens/vegeta.png
 Tropas Ginyu,"Freeza",imagens/personagens/tropasGinyu.png
 Freeza,"Freeza",imagens/personagens/freeza.png
@@ -16,9 +16,9 @@ Dabura,"Majin Buu",imagens/personagens/Dabura.png
 Babidi,"Majin Buu",imagens/personagens/babidi.png
 Gotenks,"Majin Buu",imagens/personagens/gothenks.png
 Ultimate Gohan,"Majin Buu",imagens/personagens/UltimateGohan.png
-Kuririn,"Saiyajins,Freeza,Cell,Majin Buu",imagens/personagens/kuririn.png
-Yamcha,"Saiyajins,Freeza",imagens/personagens/yancha.png
-Tenshinhan,"Saiyajins,Freeza,Cell",imagens/personagens/tenshinhan.png
+Kuririn,"Saiyajin,Freeza,Cell,Majin Buu",imagens/personagens/kuririn.png
+Yamcha,"Saiyajin,Freeza",imagens/personagens/yancha.png
+Tenshinhan,"Saiyajin,Freeza,Cell",imagens/personagens/tenshinhan.png
 17e18,"Cell",imagens/personagens/17e18.png
 19e20,"Cell",imagens/personagens/19e20.png
 Trunks,"Cell",imagens/personagens/Trunks.png
