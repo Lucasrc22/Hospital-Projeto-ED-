@@ -10,7 +10,6 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 # Constantes
 PERSONAGENS_CSV = "data/personagens.csv"
 RELACOES_CSV = "data/relacoes.csv"
-IMAGENS_DIR = ""  # Caminho já está completo no CSV personagens, então não precisa usar diretório fixo aqui
 OUTPUT_DIR = "outputs/"
 FIGSIZE = (16, 9)
 
@@ -79,13 +78,38 @@ def imprimir_metricas(G, nome_grafo):
     else:
         print("Grafo desconexo, não tem diâmetro definido")
 
-def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.png"):
+def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.png", saga=None):
     fig, ax = plt.subplots(figsize=FIGSIZE)
 
-    # Desenhar as arestas com cor e largura conforme tipo e peso
+    # Fundo por saga
+    if saga:
+        saga_normalizada = saga.strip().lower()
+        mapa_arquivo = None
+
+        if "saiyajin" in saga_normalizada:
+            mapa_arquivo = "mapaSagaSayajin.png"
+        elif "freeza" in saga_normalizada:
+            mapa_arquivo = "mapaNamekZ.png"
+        elif "cell" in saga_normalizada:
+            mapa_arquivo = "arenaCell.png"
+        elif "majin" in saga_normalizada:
+            mapa_arquivo = "PlanetaSenhorKaioshin.png"
+
+        if mapa_arquivo:
+            caminho_mapa = os.path.join("imagens", "mapas", mapa_arquivo)
+            if os.path.exists(caminho_mapa):
+                try:
+                    img = Image.open(caminho_mapa)
+                    x_vals = [p[0] for p in pos.values()]
+                    y_vals = [p[1] for p in pos.values()]
+                    ax.imshow(img, extent=[min(x_vals)-1, max(x_vals)+1, min(y_vals)-1, max(y_vals)+1], aspect='auto', alpha=0.8)
+                except Exception as e:
+                    print(f"Erro ao carregar plano de fundo da saga {saga}: {e}")
+
+    # Arestas
     for u, v, data in G.edges(data=True):
         cor = 'green' if data['tipo'] == 'aliado' else 'red'
-        largura = max(0.5, data['peso'])  # evitar linha muito fina
+        largura = max(0.5, data['peso'])
         ax.plot(
             [pos[u][0], pos[v][0]],
             [pos[u][1], pos[v][1]],
@@ -93,8 +117,8 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
             linewidth=largura,
             alpha=0.7
         )
-    
-    # Desenhar os nós com imagens ou texto
+
+    # Nós
     for node in G.nodes():
         if node in imagens:
             ab = AnnotationBbox(imagens[node], pos[node], frameon=False)
@@ -102,7 +126,6 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
         else:
             ax.text(*pos[node], node, fontsize=8, ha='center')
 
-    # Legenda manual
     import matplotlib.patches as mpatches
     aliado_patch = mpatches.Patch(color='green', label='Aliado')
     inimigo_patch = mpatches.Patch(color='red', label='Inimigo')
@@ -121,20 +144,6 @@ def main():
     imagens_path = carregar_imagens_personagens(PERSONAGENS_CSV)
     relacoes = carregar_relacoes(RELACOES_CSV)
 
-    # Grafo geral
-    G_geral = construir_grafo_por_saga(relacoes)
-    imprimir_metricas(G_geral, "Grafo Geral Dragon Ball")
-    pos = nx.spring_layout(G_geral, seed=42)
-    imagens = {}
-    for node in G_geral.nodes():
-        caminho_img = imagens_path.get(node)
-        if caminho_img:
-            img = carregar_imagem(caminho_img)
-            if img:
-                imagens[node] = img
-    desenhar_grafo_com_imagens(G_geral, pos, imagens, "Grafo Geral Dragon Ball", "grafo_geral.png")
-
-    # Grafos por saga
     sagas = set(r['saga'] for r in relacoes)
     for saga in sagas:
         G_saga = construir_grafo_por_saga(relacoes, saga)
@@ -148,7 +157,12 @@ def main():
                 if img:
                     imagens_saga[node] = img
         nome_arquivo = f"grafo_saga_{saga.lower().replace(' ', '_')}.png"
-        desenhar_grafo_com_imagens(G_saga, pos_saga, imagens_saga, f"Grafo Saga {saga}", nome_arquivo)
+        desenhar_grafo_com_imagens(
+            G_saga, pos_saga, imagens_saga,
+            f"Grafo Saga {saga}",
+            nome_arquivo,
+            saga=saga
+        )
 
 if __name__ == "__main__":
     main()
