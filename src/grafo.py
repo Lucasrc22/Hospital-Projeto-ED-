@@ -1,4 +1,8 @@
-from utils import carregar_imagens_personagens, carregar_relacoes, carregar_imagem, construir_grafo_por_saga, imprimir_metricas, desenhar_grafo_com_imagens, bfs, dfs, dijkstra_aliados
+from utils import (
+    carregar_imagens_personagens, carregar_relacoes,
+    construir_grafo_por_saga, imprimir_metricas, desenhar_grafo_com_imagens,
+    bfs, dfs, dijkstra_aliados
+)
 import os
 import networkx as nx
 
@@ -21,7 +25,7 @@ def main():
         "majin buu": "Majin Buu"
     }
 
-    ordem_cronologica_sagas = ["saiyajins", "freeza", "cell", "majin buu"]
+    ordem_cronologica_sagas = ["saiyajin", "freeza", "cell", "majin buu"]
     sagas_presentes = set(r['saga'].lower() for r in relacoes)
 
     for saga in ordem_cronologica_sagas:
@@ -29,14 +33,19 @@ def main():
             continue
 
         G_saga = construir_grafo_por_saga(relacoes, saga)
-        imprimir_metricas(G_saga, f"Grafo Saga {saga}")
-        if "Goku" in G_saga.nodes():
-            print(f"\nBFS a partir de Goku na saga {saga}:")
-            print(bfs(G_saga, "Goku"))
+        imprimir_metricas(G_saga, f"Grafo Saga {saga.capitalize()}")
 
-            print(f"\nDFS a partir de Goku na saga {saga}:")
-            print(dfs(G_saga, "Goku"))
-        
+        origem_busca = "Goku"
+        if origem_busca in G_saga.nodes():
+            print(f"\nBFS a partir de {origem_busca} na saga {saga}:")
+            bfs(G_saga, origem_busca)
+
+            print(f"\nDFS a partir de {origem_busca} na saga {saga}:")
+            dfs(G_saga, origem_busca)
+
+            print(f"\nDijkstra (alianças) a partir de {origem_busca} na saga {saga}:")
+            dijkstra_aliados(G_saga, origem_busca)
+
         chefe = None
         for chave in chefes_finais.keys():
             if chave in saga:
@@ -52,18 +61,18 @@ def main():
         imagens_saga = {}
         for node in G_saga.nodes():
             caminho_img = imagens_path.get(node)
-            if caminho_img:
-                img = carregar_imagem(caminho_img)
-                if img:
-                    imagens_saga[node] = img
+            if caminho_img and os.path.exists(caminho_img):
+                imagens_saga[node] = caminho_img
 
         nome_arquivo = f"grafo_saga_{saga.replace(' ', '_')}.png"
         desenhar_grafo_com_imagens(
             G_saga, pos_saga, imagens_saga,
             f"Grafo Saga {saga.capitalize()}",
             nome_arquivo,
-            saga=saga
+            saga=saga,
+            boss_final_node=chefe  
         )
+
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,3 @@
-# src/utils.py
-
 import csv
 import os
 import networkx as nx
@@ -74,16 +72,15 @@ def imprimir_metricas(G, nome_grafo):
     else:
         print("Grafo desconexo, não tem diâmetro definido")
 
-def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.png", saga=None):
+def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.png", saga=None, boss_final_node=None):
     fig, ax = plt.subplots(figsize=FIGSIZE)
 
-    # Fundo por saga
     if saga:
         saga_normalizada = saga.strip().lower()
         mapa_arquivo = None
 
         if "saiyajin" in saga_normalizada:
-            mapa_arquivo = "mapaSagaSaiyajin.png"
+            mapa_arquivo = "mapaSagaSayajin.png"
         elif "freeza" in saga_normalizada:
             mapa_arquivo = "mapaNamekZ.png"
         elif "cell" in saga_normalizada:
@@ -114,13 +111,27 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
             alpha=0.7
         )
 
-    # Nós
+    graus = dict(G.degree())
+
     for node in G.nodes():
+        zoom = 0.20 + (graus.get(node, 1) * 0.01)  # Zoom dinâmico baseado no grau
+
         if node in imagens:
-            ab = AnnotationBbox(imagens[node], pos[node], frameon=False)
-            ax.add_artist(ab)
+            img_obj = carregar_imagem(imagens[node], zoom=zoom)
+            if img_obj:
+                ab = AnnotationBbox(img_obj, pos[node], frameon=False)
+                ax.add_artist(ab)
+
+                # Borda vermelha só para o boss final
+                if boss_final_node and node == boss_final_node:
+                    from matplotlib.patches import Circle
+                    circle = Circle(pos[node], radius=0.15, edgecolor='red', facecolor='none', linewidth=2)
+                    ax.add_patch(circle)
+
+                ax.text(*pos[node], node, fontsize=6, ha='center', va='top', color='white', weight='bold',
+                        bbox=dict(facecolor='black', alpha=0.5, boxstyle='round,pad=0.2'))
         else:
-            ax.text(*pos[node], node, fontsize=8, ha='center')
+            ax.text(*pos[node], node, fontsize=8, ha='center', va='center', weight='bold')
 
     import matplotlib.patches as mpatches
     aliado_patch = mpatches.Patch(color='green', label='Aliado')
@@ -132,6 +143,8 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
     plt.tight_layout()
     plt.savefig(os.path.join("outputs", nome_arquivo))
     plt.show()
+
+
 
 def dijkstra_aliados(G, origem):
     G_aliados = nx.Graph()
