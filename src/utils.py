@@ -1,11 +1,111 @@
 import csv
 import os
+import plotly.graph_objects as go
 import networkx as nx
 import matplotlib.pyplot as plt
 from PIL import Image
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 FIGSIZE = (16, 9)
+
+def desenhar_grafo_com_plotly(G, titulo="", nome_arquivo="grafo.html", boss_final_node=None):
+    pos = nx.spring_layout(G, seed=42, k=0.5) 
+
+    edge_traces = []
+    for u, v, data in G.edges(data=True):
+        x0, y0 = pos[u]
+        x1, y1 = pos[v]
+        color = 'green' if data['tipo'] == 'aliado' else 'red'
+        width = max(1, data['peso'])
+        edge_trace = go.Scatter(
+            x=[x0, x1],
+            y=[y0, y1],
+            line=dict(width=width, color=color),
+            hoverinfo='text',
+            mode='lines',
+            text=f"{u} - {v} ({data['tipo']}, peso={data['peso']})",
+            showlegend=False
+        )
+        edge_traces.append(edge_trace)
+
+    node_x = []
+    node_y = []
+    node_text = []
+    node_color = []
+    node_size = []
+
+    graus = dict(G.degree())
+
+    for node in G.nodes():
+        x, y = pos[node]
+        node_x.append(x)
+        node_y.append(y)
+        grau = graus.get(node, 1)
+        node_size.append(20 + grau * 5)
+        node_text.append(f"{node} (Grau: {grau})")
+        node_color.append('red' if boss_final_node and node == boss_final_node else 'blue')
+
+    node_trace = go.Scatter(
+        x=node_x,
+        y=node_y,
+        mode='markers+text',
+        text=[node for node in G.nodes()],
+        textposition="bottom center",
+        hoverinfo='text',
+        marker=dict(
+            showscale=False,
+            color=node_color,
+            size=node_size,
+            line_width=2
+        )
+    )
+
+    fig = go.Figure(data=edge_traces + [node_trace],
+                    layout=go.Layout(
+                        title=titulo,
+                        titlefont_size=16,
+                        showlegend=False,
+                        hovermode='closest',
+                        margin=dict(b=20,l=5,r=5,t=40),
+                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+                    ))
+
+    fig.write_html(nome_arquivo)
+    print(f"Arquivo HTML salvo: {nome_arquivo}")
+
+def plotar_analise_metrica_grafo(G, saga):
+    graus = dict(G.degree())
+    centralidade = nx.betweenness_centrality(G)
+
+    personagens = list(graus.keys())
+    valores_grau = [graus[n] for n in personagens]
+    valores_centralidade = [centralidade[n] for n in personagens]
+
+    from plotly.subplots import make_subplots
+    fig = make_subplots(rows=1, cols=2, subplot_titles=("Grau dos Nós", "Centralidade (Betweenness)"))
+
+    fig.add_trace(
+        go.Bar(x=personagens, y=valores_grau, name="Grau", marker_color='steelblue'),
+        row=1, col=1
+    )
+
+    fig.add_trace(
+        go.Bar(x=personagens, y=valores_centralidade, name="Centralidade", marker_color='darkorange'),
+        row=1, col=2
+    )
+
+    fig.update_layout(
+        title_text=f"Análise de Métricas - Saga {saga.capitalize()}",
+        showlegend=False,
+        height=500,
+        width=1000,
+        margin=dict(t=80)
+    )
+
+    output_path = os.path.join("outputs", f"analise_metricas_{saga.replace(' ', '_')}.html")
+    fig.write_html(output_path)
+    print(f"✅ Gráfico interativo salvo em: {output_path}")
 
 def carregar_imagens_personagens(path):
     imagens_personagens = {}
@@ -80,7 +180,7 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
         mapa_arquivo = None
 
         if "saiyajin" in saga_normalizada:
-            mapa_arquivo = "mapaSayajin.png"
+            mapa_arquivo = "mapaSaiyajin.png"
         elif "freeza" in saga_normalizada:
             mapa_arquivo = "mapaNamekZ.png"
         elif "cell" in saga_normalizada:
@@ -99,7 +199,7 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
                 except Exception as e:
                     print(f"Erro ao carregar plano de fundo da saga {saga}: {e}")
 
-    # Arestas
+    
     for u, v, data in G.edges(data=True):
         cor = 'green' if data['tipo'] == 'aliado' else 'red'
         largura = max(1, data['peso'])
@@ -122,7 +222,6 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
                 ab = AnnotationBbox(img_obj, pos[node], frameon=False)
                 ax.add_artist(ab)
 
-                # Borda vermelha só para o boss final
                 if boss_final_node and node == boss_final_node:
                     from matplotlib.patches import Circle
                     circle = Circle(pos[node], radius=0.15, edgecolor='red', facecolor='none', linewidth=2)

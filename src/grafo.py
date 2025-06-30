@@ -1,6 +1,8 @@
 from utils import (
     carregar_imagens_personagens, carregar_relacoes,
-    construir_grafo_por_saga, imprimir_metricas, desenhar_grafo_com_imagens,
+    construir_grafo_por_saga, imprimir_metricas,
+    desenhar_grafo_com_imagens, desenhar_grafo_com_plotly,
+    plotar_analise_metrica_grafo,
     bfs, dfs, dijkstra_aliados
 )
 import os
@@ -9,7 +11,6 @@ import networkx as nx
 PERSONAGENS_CSV = "data/personagens.csv"
 RELACOES_CSV = "data/relacoes.csv"
 OUTPUT_DIR = "outputs/"
-
 
 def main():
     if not os.path.exists(OUTPUT_DIR):
@@ -64,15 +65,24 @@ def main():
             if caminho_img and os.path.exists(caminho_img):
                 imagens_saga[node] = caminho_img
 
-        nome_arquivo = f"grafo_saga_{saga.replace(' ', '_')}.png"
+        nome_arquivo_img = f"grafo_saga_{saga.replace(' ', '_')}.png"
         desenhar_grafo_com_imagens(
             G_saga, pos_saga, imagens_saga,
             f"Grafo Saga {saga.capitalize()}",
-            nome_arquivo,
+            nome_arquivo_img,
             saga=saga,
-            boss_final_node=chefe  
+            boss_final_node=chefe
         )
 
+        nome_arquivo_html = os.path.join(OUTPUT_DIR, f"grafo_saga_{saga.replace(' ', '_')}.html")
+        desenhar_grafo_com_plotly(
+            G_saga,
+            titulo=f"Grafo Saga {saga.capitalize()}",
+            nome_arquivo=nome_arquivo_html,
+            boss_final_node=chefe
+        )
+
+        plotar_analise_metrica_grafo(G_saga, saga)
 
 if __name__ == "__main__":
     main()
