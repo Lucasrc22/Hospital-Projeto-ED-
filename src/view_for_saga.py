@@ -38,5 +38,3 @@ def visualizar_saga(saga_nome):
     )
 
 
-if __name__ == "__main__":
-    visualizar_saga("Saiyajins")

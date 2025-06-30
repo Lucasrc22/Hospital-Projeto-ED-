@@ -105,7 +105,7 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
     # Arestas
     for u, v, data in G.edges(data=True):
         cor = 'green' if data['tipo'] == 'aliado' else 'red'
-        largura = max(0.5, data['peso'])
+        largura = max(1, data['peso'])
         ax.plot(
             [pos[u][0], pos[v][0]],
             [pos[u][1], pos[v][1]],

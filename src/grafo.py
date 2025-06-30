@@ -21,8 +21,13 @@ def main():
         "majin buu": "Majin Buu"
     }
 
-    sagas = set(r['saga'].lower() for r in relacoes)
-    for saga in sagas:
+    ordem_cronologica_sagas = ["saiyajins", "freeza", "cell", "majin buu"]
+    sagas_presentes = set(r['saga'].lower() for r in relacoes)
+
+    for saga in ordem_cronologica_sagas:
+        if saga not in sagas_presentes:
+            continue
+
         G_saga = construir_grafo_por_saga(relacoes, saga)
         imprimir_metricas(G_saga, f"Grafo Saga {saga}")
 
@@ -49,14 +54,10 @@ def main():
         nome_arquivo = f"grafo_saga_{saga.replace(' ', '_')}.png"
         desenhar_grafo_com_imagens(
             G_saga, pos_saga, imagens_saga,
-            f"Grafo Saga {saga}",
+            f"Grafo Saga {saga.capitalize()}",
             nome_arquivo,
             saga=saga
         )
-
-
-
-
 
 if __name__ == "__main__":
     main()

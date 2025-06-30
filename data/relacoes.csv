@@ -1,8 +1,15 @@
 origem,destino,tipo,saga,peso
 Goku,Piccolo,aliado,Saiyajins,2
+Goku,Kuririn,aliado,Saiyajins,3
+Goku,Tenshinhan,aliado,Saiyajins,3
+Goku,Yamcha,aliado,Saiyajins,3
 Goku,Gohan Kid,aliado,Saiyajins,3
-GohanKid,Raditz,inimigo,Saiyajins,3
+Gohan Kid,Raditz,inimigo,Saiyajins,3
+Gohan Kid,Tenshinhan,aliado,Saiyajins,3
 Piccolo,Gohan Kid,aliado,Saiyajins,2
+Kuririn,Tenshinhan,aliado,Saiyajins,3
+Yamcha,Tenshinhan,aliado,Saiyajins,3
+Kuririn,Yamcha,aliado,Saiyajins,3
 Goku,Raditz,inimigo,Saiyajins,3
 Goku,Nappa,inimigo,Saiyajins,3
 Vegeta (saga Saiyajin),Nappa,aliado,Saiyajins,1
@@ -12,6 +19,10 @@ Gohan Kid,Nappa,inimigo,Saiyajins,2
 Gohan Kid,Vegeta (saga Saiyajin),inimigo,Saiyajins,2
 Goku,Piccolo,aliado,Freeza,3
 Goku,Gohan Kid,aliado,Freeza,3
+Kuririn,Tenshinhan,aliado,Freeza,3
+Gohan Kid,Piccolo,aliado,Freeza,3
+Yamcha,Tenshinhan,aliado,Freeza,3
+Kuririn,Yamcha,aliado,Freeza,3
 Kuririn,Freeza,inimigo,Freeza,3
 Goku,Vegeta,aliado,Freeza,2
 Goku,Tropas Ginyu,inimigo,Freeza,3
@@ -24,8 +35,12 @@ Goku Super Saiyajin,Gohan Kid,aliado,Freeza,3
 Freeza,Tropas Ginyu,aliado,Freeza,3
 Goku,Piccolo,aliado,Cell,3
 Goku,Gohan Super Saiyajin 2,aliado,Cell,3
+Kuririn,Tenshinhan,aliado,Cell,3
+Yamcha,Tenshinhan,aliado,Cell,3
+Kuririn,Yamcha,aliado,Cell,3
 Gohan Super Saiyajin 2,Cell,inimigo,Cell,3
 Gohan Super Saiyajin 2,Goku,aliado,Cell,3
+Gohan Super Saiyajin 2,Piccolo,aliado,Cell,3
 Piccolo,Cell,inimigo,Cell,2
 Goku,Cell,inimigo,Cell,3
 Goku,Vegeta,aliado,Cell,2
@@ -67,6 +82,8 @@ Trunks,Gohan Super Saiyajin 2,aliado,Cell,3
 Trunks,Piccolo,aliado,Cell,3
 Kaioshin,Ultimate Gohan,aliado,Majin Buu,3
 Kaioshin,Goku,aliado,Majin Buu,3
+Majin Vegeta,Goku SSJ2,inimigo,Majin Buu,2
+Vegetto,Buuhan,inimigo,Majin Buu, 3
 
 
 
