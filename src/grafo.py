@@ -1,4 +1,4 @@
-from utils import carregar_imagens_personagens, carregar_relacoes, carregar_imagem, construir_grafo_por_saga, imprimir_metricas, desenhar_grafo_com_imagens
+from utils import carregar_imagens_personagens, carregar_relacoes, carregar_imagem, construir_grafo_por_saga, imprimir_metricas, desenhar_grafo_com_imagens, bfs, dfs, dijkstra_aliados
 import os
 import networkx as nx
 
@@ -30,7 +30,13 @@ def main():
 
         G_saga = construir_grafo_por_saga(relacoes, saga)
         imprimir_metricas(G_saga, f"Grafo Saga {saga}")
+        if "Goku" in G_saga.nodes():
+            print(f"\nBFS a partir de Goku na saga {saga}:")
+            print(bfs(G_saga, "Goku"))
 
+            print(f"\nDFS a partir de Goku na saga {saga}:")
+            print(dfs(G_saga, "Goku"))
+        
         chefe = None
         for chave in chefes_finais.keys():
             if chave in saga:

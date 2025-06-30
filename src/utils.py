@@ -83,7 +83,7 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
         mapa_arquivo = None
 
         if "saiyajin" in saga_normalizada:
-            mapa_arquivo = "mapaSagaSayajin.png"
+            mapa_arquivo = "mapaSagaSaiyajin.png"
         elif "freeza" in saga_normalizada:
             mapa_arquivo = "mapaNamekZ.png"
         elif "cell" in saga_normalizada:
@@ -132,3 +132,44 @@ def desenhar_grafo_com_imagens(G, pos, imagens, titulo="", nome_arquivo="grafo.p
     plt.tight_layout()
     plt.savefig(os.path.join("outputs", nome_arquivo))
     plt.show()
+
+def dijkstra_aliados(G, origem):
+    G_aliados = nx.Graph()
+    for u, v, data in G.edges(data=True):
+        if data['tipo'] == 'aliado':
+            custo = 1 / data['peso'] if data['peso'] > 0 else 10
+            G_aliados.add_edge(u, v, weight=custo)
+
+    if origem not in G_aliados:
+        print(f"Origem '{origem}' não está conectada por alianças nesta saga.")
+        return
+
+    caminhos = nx.single_source_dijkstra_path(G_aliados, origem)
+    distancias = nx.single_source_dijkstra_path_length(G_aliados, origem)
+
+    print(f"\nCaminhos de aliados mais fortes a partir de {origem}:")
+    for destino in caminhos:
+        if destino != origem:
+            caminho = " -> ".join(caminhos[destino])
+            print(f"  {destino}: {caminho} (Custo: {distancias[destino]:.2f})")
+
+def dfs(G, origem):
+    visitados = list(nx.dfs_preorder_nodes(G, source=origem))
+    print(f"\nBusca em profundidade (DFS) a partir de {origem}:")
+    print(" -> ".join(visitados))
+
+def bfs(G, origem):
+    visitados = list(nx.bfs_tree(G, source=origem))
+    print(f"\nBusca em largura (BFS) a partir de {origem}:")
+    print(" -> ".join(visitados))
+
+def mst_kruskal_aliados(G):
+    G_aliados = nx.Graph()
+    for u, v, data in G.edges(data=True):
+        if data['tipo'] == 'aliado':
+            G_aliados.add_edge(u, v, weight=1 / data['peso'] if data['peso'] > 0 else 10)
+
+    mst = nx.minimum_spanning_tree(G_aliados, algorithm='kruskal')
+    print("\nÁrvore Geradora Mínima (Kruskal) com alianças:")
+    for u, v, data in mst.edges(data=True):
+        print(f"  {u} - {v} (peso: {1/data['weight']:.2f})")
