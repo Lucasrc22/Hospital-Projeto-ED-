@@ -5,6 +5,8 @@ Goku,Tenshinhan,aliado,Saiyajin,10
 Goku,Yamcha,aliado,Saiyajin,10
 Goku,Gohan Kid,aliado,Saiyajin,10
 Gohan Kid,Raditz,inimigo,Saiyajin,10
+Vegeta (saga Saiyajin),Raditz,aliado,Saiyajin,5
+Nappa,Raditz,aliado,Saiyajin,5
 Gohan Kid,Tenshinhan,aliado,Saiyajin,10
 Piccolo,Gohan Kid,aliado,Saiyajin,10
 Kuririn,Tenshinhan,aliado,Saiyajin,10
@@ -66,6 +68,9 @@ Kuririn,Vegeta (saga Saiyajin),inimigo,Saiyajin,5
 Kuririn,Tropas Ginyu,inimigo,Freeza,5
 Kuririn,Cell,inimigo,Cell,5
 Kuririn,Dabura,inimigo,Majin Buu,5
+Kuririn,Goku,aliado,Majin Buu,10
+Kuririn,Gohan,aliado,Majin Buu,10
+Kuririn,Vegeta,aliado,Majin Buu,5
 Yamcha,Nappa,inimigo,Saiyajin,5
 Yamcha,Tropas Ginyu,inimigo,Freeza,5
 Tenshinhan,Nappa,inimigo,Saiyajin,5
@@ -86,6 +91,7 @@ Kaioshin,Ultimate Gohan,aliado,Majin Buu,10
 Kaioshin,Dabura,inimigo,Majin Buu,10
 Kaioshin,Goku,aliado,Majin Buu,10
 Majin Vegeta,Goku SSJ2,inimigo,Majin Buu,5
+Majin Vegeta,Majin Buu,inimigo,Majin Buu,5
 Vegetto,Buuhan,inimigo,Majin Buu, 10
 
 

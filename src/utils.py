@@ -275,13 +275,3 @@ def bfs(G, origem):
     print(f"\nBusca em largura (BFS) a partir de {origem}:")
     print(" -> ".join(visitados))
 
-def mst_kruskal_aliados(G):
-    G_aliados = nx.Graph()
-    for u, v, data in G.edges(data=True):
-        if data['tipo'] == 'aliado':
-            G_aliados.add_edge(u, v, weight=1 / data['peso'] if data['peso'] > 0 else 10)
-
-    mst = nx.minimum_spanning_tree(G_aliados, algorithm='kruskal')
-    print("\nÁrvore Geradora Mínima (Kruskal) com alianças:")
-    for u, v, data in mst.edges(data=True):
-        print(f"  {u} - {v} (peso: {1/data['weight']:.2f})")
